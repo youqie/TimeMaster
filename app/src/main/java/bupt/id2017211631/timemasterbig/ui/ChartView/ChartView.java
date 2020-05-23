@@ -297,7 +297,11 @@ public class ChartView extends Fragment {
 
                 long Start = startDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS, End = endDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS;
                 int size = (int) ((End - Start) / DateUtils.DAY_IN_MILLIS) + 1;
-                Toast.makeText(context, "在选定的" + size + "天内，共花费了" + value.getValue() + "个小时在" + getTags()[columnIndex].name + "上", Toast.LENGTH_SHORT).show();
+                if (value.getValue() * 60 > 120) {
+                    Toast.makeText(context, "在选定的" + size + "天内，共花费了约" + (float) (Math.round(value.getValue() * 10)) / 10 + "小时在" + getTags()[columnIndex].name + "上", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "在选定的" + size + "天内，共花费了" + (int) (value.getValue() * 60) + "分钟在" + getTags()[columnIndex].name + "上", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -323,7 +327,11 @@ public class ChartView extends Fragment {
                 long Start = startDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS;
                 long Now = (Start + DateUtils.DAY_IN_MILLIS);
                 String date = getDay(Now);
-                Toast.makeText(context, "在" + date + "，共花费了" + pointValue.getY() + "个小时在" + tag + "上", Toast.LENGTH_SHORT).show();
+                if (pointValue.getY() * 60 > 120) {
+                    Toast.makeText(context, "在" + date + "，共花费了约" + (float) (Math.round(pointValue.getY() * 10)) / 10 + "小时在" + tag + "上", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "在" + date + "，共花费了" + (int) (pointValue.getY() * 60) + "分钟在" + tag + "上", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
