@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.DayView.DayView">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- 左侧标题的父容器 -->
+
+        <LinearLayout
+            android:id="@+id/left_title_container"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <include layout="@layout/layout_left_title" />
+        </LinearLayout>
+
+        <!-- 右侧标题的父容器可实现水平滚动 -->
+
+        <bupt.id2017211631.timemasterbig.MyHorizontalScrollView
+            android:id="@+id/title_horsv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:baselineAligned="false"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/right_title_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <include layout="@layout/layout_right_tab_a" />
+
+            </LinearLayout>
+        </bupt.id2017211631.timemasterbig.MyHorizontalScrollView>
+    </LinearLayout>
+
+    <!-- 此部分是内容部分 用ScrollView实现上下滚动效果 -->
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 左侧内容的父容器 -->
+
+            <LinearLayout
+                android:id="@+id/left_container"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/left_container_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <!-- 右侧内容的父容器 实现水平滚动 -->
+
+            <bupt.id2017211631.timemasterbig.MyHorizontalScrollView
+                android:id="@+id/content_horsv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/right_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ListView
+                        android:id="@+id/right_container_listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+            </bupt.id2017211631.timemasterbig.MyHorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
