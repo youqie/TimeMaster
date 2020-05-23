@@ -3,17 +3,13 @@ package bupt.id2017211631.timemasterbig.ui.ChartView;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +23,6 @@ import bupt.id2017211631.timemasterbig.R;
 import bupt.id2017211631.timemasterbig.SQL.Activity;
 import bupt.id2017211631.timemasterbig.SQL.DBAdapter;
 import bupt.id2017211631.timemasterbig.SQL.Tag;
-
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
@@ -92,6 +87,7 @@ public class ChartView extends Fragment {
     void setDataTime(View view) {
         TextView startDateText = view.findViewById(R.id.startDate);
         Calendar startDateCalendar = Calendar.getInstance();
+        startDateCalendar.setTimeInMillis(startDateCalendar.getTime().getTime() - DateUtils.DAY_IN_MILLIS * 6);
         setDateOnClickListener(startDateText, startDateText, startDateCalendar, startDate);
         TextView endDateText = view.findViewById(R.id.endDate);
         Calendar endDateCalendar = Calendar.getInstance();
@@ -103,7 +99,7 @@ public class ChartView extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(),R.layout.fragment_charts,null);
+        View view = View.inflate(getActivity(), R.layout.fragment_charts, null);
         setDataTime(view);
         DBAdapter dbAdapter = new DBAdapter(getActivity());
         dbAdapter.open();
@@ -129,16 +125,6 @@ public class ChartView extends Fragment {
             endDate = EndDate;
             this.dbAdapter = dbAdapter;
             this.context = context;
-//            dbAdapter.insertActivity(new Activity(1, "睡觉", Activity.strToDate("2020-05-17"), Activity.strToTime("00:00:00")
-//                    , Activity.strToTime("05:30:00"), ""));
-//            dbAdapter.insertActivity(new Activity(2, "学习", Activity.strToDate("2020-05-17"), Activity.strToTime("05:30:00")
-//                    , Activity.strToTime("08:15:00"), ""));
-//            dbAdapter.insertActivity(new Activity(3, "吃饭", Activity.strToDate("2020-05-17"), Activity.strToTime("08:15:00")
-//                    , Activity.strToTime("08:30:00"), ""));
-//            dbAdapter.insertActivity(new Activity(4, "锻炼", Activity.strToDate("2020-05-17"), Activity.strToTime("08:30:00")
-//                    , Activity.strToTime("10:30:00"), ""));
-//            dbAdapter.insertActivity(new Activity(5, "吃饭", Activity.strToDate("2020-05-17"), Activity.strToTime("10:30:00")
-//                    , Activity.strToTime("10:55:00"), ""));
             generateInitialLineData();
             generateColumnData();
         }
@@ -251,7 +237,7 @@ public class ChartView extends Fragment {
             line.setColor(ChartUtils.COLOR_GREEN).setCubic(true);
 
             List<Line> lines = new ArrayList<Line>();
-            line.setHasPoints(false);
+            line.setHasPoints(size <= 7);
             line.setFilled(true);
             lines.add(line);
 
