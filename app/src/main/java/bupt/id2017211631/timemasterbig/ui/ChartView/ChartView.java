@@ -67,7 +67,6 @@ public class ChartView extends Fragment {
                                 DateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                                 date.setTime(DateCalendar.getTime().getTime());
                                 DateText.setText(formatTime(date));
-//                                updateCharts();
                                 placeholderFragment.updateDate(startDate, endDate);
                             }
                         },

@@ -3,11 +3,11 @@ package bupt.id2017211631.timemasterbig.ui.DayView;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,35 +27,31 @@ import bupt.id2017211631.timemasterbig.SQL.Tag;
 import bupt.id2017211631.timemasterbig.UtilTools;
 import bupt.id2017211631.timemasterbig.adapter.ALeftAdapter;
 import bupt.id2017211631.timemasterbig.adapter.ARightAdapter;
+import bupt.id2017211631.timemasterbig.ui.EventDialog;
 
 public class DayView extends Fragment {
 
-    private DBAdapter dbAdapter;
+    public static Handler handler = new Handler();
     //顶部tag
     Tag[] tags;
-
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    private DBAdapter dbAdapter;
     //左侧固定一列数据适配
     private ListView left_container_listview;
     private List<String> leftList;
-
     //右侧数据适配
     private ListView right_container_listview;
     private List<Activity>
             activitiesList;
-
     private MyHorizontalScrollView title_horsv;
     private MyHorizontalScrollView content_horsv;
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-
-    public static Handler handler = new Handler();
-
     private Runnable RefreshLable = new Runnable() {
         public void run() {
             this.update();
             handler.postDelayed(this, 1000 * 30);// 间隔30秒
         }
+
         void update() {
             initRightData();
             initRightView();
@@ -64,7 +60,7 @@ public class DayView extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(),R.layout.fragment_dayview,null);
+        View view = View.inflate(getActivity(), R.layout.fragment_dayview, null);
 
         dbAdapter = new DBAdapter(getContext());
         dbAdapter.open(); //启动数据库
@@ -78,7 +74,7 @@ public class DayView extends Fragment {
         return view;
     }
 
-    public void findView(View view){
+    public void findView(View view) {
         title_horsv = (MyHorizontalScrollView) view.findViewById(R.id.title_horsv);
         left_container_listview = (ListView) view.findViewById(R.id.left_container_listview);
         content_horsv = (MyHorizontalScrollView) view.findViewById(R.id.content_horsv);
@@ -94,8 +90,7 @@ public class DayView extends Fragment {
 
         tags = dbAdapter.queryAllShowTag();
 
-        for(Tag tag:tags)
-        {
+        for (Tag tag : tags) {
             View tagview = android.view.LayoutInflater.from(getActivity()).inflate(R.layout.layout_tagname, null);
             TextView text = (TextView) tagview.findViewById(R.id.tag);
             text.setText(tag.name);
@@ -104,7 +99,7 @@ public class DayView extends Fragment {
         }
     }
 
-    private void initLeftData(){
+    private void initLeftData() {
         leftList = new ArrayList<>();
 
         leftList.add("0:15");
@@ -134,9 +129,9 @@ public class DayView extends Fragment {
 
     }
 
-    private void initRightView(){
+    private void initRightView() {
         ARightAdapter myRightAdapter = new ARightAdapter(
-          getActivity(), activitiesList,tags,left_container_listview
+                getActivity(), activitiesList, tags, left_container_listview
         );
         right_container_listview.setAdapter(myRightAdapter);
         ViewGroup.LayoutParams params = right_container_listview.getLayoutParams();
@@ -147,7 +142,11 @@ public class DayView extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Activity activities = (Activity) parent.getAdapter().getItem(position);
-                Toast.makeText(getActivity(),"点击", Toast.LENGTH_LONG).show();
+
+                // TO-DO change id to correct
+                EventDialog.newInstance(id).show(getFragmentManager(), "event_dialog");
+
+                Toast.makeText(getActivity(), "点击", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -160,15 +159,14 @@ public class DayView extends Fragment {
         Date date = new Date();
         java.sql.Date datenow = Activity.strToDate(dateFormat.format(date)); // 日期
 
-        Activity[] allactivities = dbAdapter.queryActivityByTime(datenow,datenow);
+        Activity[] allactivities = dbAdapter.queryActivityByTime(datenow, datenow);
 
-        String time ="00:00:00";
-        if(allactivities!=null)
-            for(Activity activity:allactivities)
-            {
-                if(!activity.startTime.toString().equals(time))
-                    activitiesList.add(new Activity(1,"",datenow,Activity.strToTime(time)
-                            ,activity.startTime,""));
+        String time = "00:00:00";
+        if (allactivities != null)
+            for (Activity activity : allactivities) {
+                if (!activity.startTime.toString().equals(time))
+                    activitiesList.add(new Activity(1, "", datenow, Activity.strToTime(time)
+                            , activity.startTime, ""));
 
                 time = activity.endTime.toString();
                 activitiesList.add(activity);
