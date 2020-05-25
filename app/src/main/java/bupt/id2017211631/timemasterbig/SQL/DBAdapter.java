@@ -178,6 +178,7 @@ public class DBAdapter {
         updateValues.put(KEY_DATE, activity.date.toString());
         updateValues.put(KEY_START_TIME, activity.startTime.toString());
         updateValues.put(KEY_END_TIME,activity.endTime.toString());
+        updateValues.put(KEY_NOTE,activity.note);
 
         return db.update(DB_TABLE_Activity, updateValues,  KEY_ID + "=" + id, null);
     }
