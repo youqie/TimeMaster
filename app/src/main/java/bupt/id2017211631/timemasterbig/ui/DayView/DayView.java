@@ -50,7 +50,7 @@ public class DayView extends Fragment {
     private Runnable RefreshLable = new Runnable() {
         public void run() {
             this.update();
-            handler.postDelayed(this, 1000 * 15);// 间隔30秒
+            handler.postDelayed(this, 1000 * 15);// 间隔15秒
         }
 
         void update() {
@@ -62,7 +62,9 @@ public class DayView extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        view = View.inflate(getActivity(), R.layout.fragment_dayview, null);
+        if (isAdded()) {
+            view = View.inflate(getActivity(), R.layout.fragment_dayview, null);
+        }
 
         dbAdapter = new DBAdapter(getContext());
         dbAdapter.open(); //启动数据库
@@ -84,8 +86,10 @@ public class DayView extends Fragment {
     }
 
     public void initTag(View view) {
-        LayoutInflater layoutInflater =
-                (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (isAdded()) {
+            LayoutInflater layoutInflater =
+                    (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
 
         LinearLayout tagList = (LinearLayout) view.findViewById(R.id.taglist);
         tagList.removeAllViews();
@@ -93,11 +97,13 @@ public class DayView extends Fragment {
         tags = dbAdapter.queryAllShowTag();
 
         for (Tag tag : tags) {
-            View tagview = android.view.LayoutInflater.from(getActivity()).inflate(R.layout.layout_tagname, null);
-            TextView text = (TextView) tagview.findViewById(R.id.tag);
-            text.setText(tag.name);
-            //text.setId(i);
-            tagList.addView(tagview);//将TextView 添加到子View 中
+            if (isAdded()) {
+                View tagview = android.view.LayoutInflater.from(getActivity()).inflate(R.layout.layout_tagname, null);
+                TextView text = (TextView) tagview.findViewById(R.id.tag);
+                text.setText(tag.name);
+                //text.setId(i);
+                tagList.addView(tagview);
+            }//将TextView 添加到子View 中
         }
     }
 
@@ -132,28 +138,28 @@ public class DayView extends Fragment {
     }
 
     private void initRightView() {
-        ARightAdapter myRightAdapter = new ARightAdapter(
-                getActivity(), activitiesList, tags, left_container_listview
-        );
-        right_container_listview.setAdapter(myRightAdapter);
-        ViewGroup.LayoutParams params = right_container_listview.getLayoutParams();
-        params.height = left_container_listview.getLayoutParams().height;
-        right_container_listview.setLayoutParams(params);
+        if (isAdded()) {
+            ARightAdapter myRightAdapter = new ARightAdapter(
+                    getActivity(), activitiesList, tags, left_container_listview
+            );
+            right_container_listview.setAdapter(myRightAdapter);
+            ViewGroup.LayoutParams params = right_container_listview.getLayoutParams();
+            params.height = left_container_listview.getLayoutParams().height;
+            right_container_listview.setLayoutParams(params);
 
-        right_container_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Activity activities = (Activity) parent.getAdapter().getItem(position);
+            right_container_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Activity activities = (Activity) parent.getAdapter().getItem(position);
 
-                // TO-DO change id to correct
-                if(!activities.tag.equals(""))
-                {
-                EventDialog.newInstance(id).show(getFragmentManager(), "event_dialog");
+                    // TO-DO change id to correct
+                    if (!activities.tag.equals("")) {
+                        EventDialog.newInstance(id).show(getFragmentManager(), "event_dialog");
+                    }
 
-                Toast.makeText(getActivity(), "点击", Toast.LENGTH_LONG).show();}
-
-            }
-        });
+                }
+            });
+        }
     }
 
     //初始化数据源
