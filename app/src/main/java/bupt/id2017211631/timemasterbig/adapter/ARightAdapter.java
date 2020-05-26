@@ -84,6 +84,8 @@ public class ARightAdapter extends BaseAdapter {
             int hight = listItem.getMeasuredHeight();
             double totalhight = hight*time;
 
+            int itemhight =  (int) (Math.round(totalhight)+(Math.round(time)-1)*listView.getDividerHeight());
+            if(itemhight<=1) itemhight=1;
 
             int i=0;
             for(Tag tag:tags)
@@ -91,7 +93,7 @@ public class ARightAdapter extends BaseAdapter {
 
                 View itemview = LayoutInflater.from(context).inflate(R.layout.layout_right_itme2, null);
                 TextView item = (TextView) itemview.findViewById(R.id.right_item);
-                item.getLayoutParams().height= (int) (Math.round(totalhight)+(Math.round(time)-1)*listView.getDividerHeight());
+                item.getLayoutParams().height= itemhight;
                 viewHold.textView[i]=item;
                 if(activities.tag.equals(tag.name)) viewHold.textView[i].setBackgroundColor(tag.color);
                 liner.addView(itemview);
