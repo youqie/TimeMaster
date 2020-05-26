@@ -71,12 +71,12 @@ public class WeekView extends Fragment {
                 ,Activity.strToTime("15:30:00"),""));
 
 
-        dbAdapter.deleteAllActivity();
-        //插入测试数据
-        dbAdapter.insertActivity(testactivitiesList[0]);
-        dbAdapter.insertActivity(testactivitiesList[1]);
-        dbAdapter.insertActivity(testactivitiesList[2]);
-        dbAdapter.insertActivity(testactivitiesList[3]);
+//        dbAdapter.deleteAllActivity();
+//        //插入测试数据
+//        dbAdapter.insertActivity(testactivitiesList[0]);
+//        dbAdapter.insertActivity(testactivitiesList[1]);
+//        dbAdapter.insertActivity(testactivitiesList[2]);
+//        dbAdapter.insertActivity(testactivitiesList[3]);
 
 
         calendarLayout = view.findViewById(R.id.calendarLayout);
