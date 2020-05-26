@@ -41,7 +41,6 @@ public class WeekView extends Fragment {
     LinearLayout sundayLayout;
 
 
-
     DBAdapter dbAdapter;
     Activity activity1 = new Activity();
     Activity activity2;
@@ -77,10 +76,11 @@ public class WeekView extends Fragment {
         saturdayLayout = view.findViewById(R.id.saturdayLayout);
         sundayLayout = view.findViewById(R.id.sundayLayout);
 
+
         isExp = calendarLayout.isExpand();
 
         shrink = view.findViewById(R.id.shrinkMonthView);
-
+        //点击按钮显示/隐藏月视图
         shrink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +96,7 @@ public class WeekView extends Fragment {
                 }
             }
         });
+
         /**
          * 用户点击月视图中的日期事件
          * 周视图同步跳转到相应的位置
@@ -114,12 +115,12 @@ public class WeekView extends Fragment {
                 //Log.d(b,String.valueOf(a));
 
 
-//                dbAdapter.deleteAllActivity();
-//                //插入测试数据
-//                dbAdapter.insertActivity(testactivitiesList[0]);
-//                dbAdapter.insertActivity(testactivitiesList[1]);
-//                dbAdapter.insertActivity(testactivitiesList[2]);
-//                dbAdapter.insertActivity(testactivitiesList[3]);
+                dbAdapter.deleteAllActivity();
+                //插入测试数据
+                dbAdapter.insertActivity(testactivitiesList[0]);
+                dbAdapter.insertActivity(testactivitiesList[1]);
+                dbAdapter.insertActivity(testactivitiesList[2]);
+                dbAdapter.insertActivity(testactivitiesList[3]);
 
                 //获取点击日期的年月日
                 int y = a.getYear();
@@ -193,7 +194,7 @@ public class WeekView extends Fragment {
     }
 
 
-    //输入某一天，判断是周几，并显示在weekView中
+    //输入活动数组，将数组中所有的活动显示在周视图里
     private void showWeekView(Activity[] activities){
         Tag[] tags =dbAdapter.queryAllTag();
 
@@ -207,8 +208,9 @@ public class WeekView extends Fragment {
         sundayLayout.removeAllViews();
 
 
-        LinearLayout linearLayout = tuesdayLayout;
+        LinearLayout linearLayout = null;
         Button[] buttons = new Button[activities.length];
+
         for(int i = 0;i<activities.length;i++){
             //判断某一天是周几（date类型用）
             int y=activities[i].date.getYear();
@@ -233,12 +235,21 @@ public class WeekView extends Fragment {
 
             }
 
-
-
             buttons[i] = new Button(getActivity());
             linearLayout.addView(buttons[i]);
             LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) buttons[i].getLayoutParams();
-            int e = (int) (activities[i].endTime.getTime()-activities[i].startTime.getTime())/3600/24*2;
+
+            /**
+             * 计算每一个控件的长度的方法：
+             * 1.获取时间轴所在的linearLayout的总高度
+             * 2.获取每一个活动占每日24小时的百分比，给每一个按钮分配相应的高度
+             * 注意：每一个时间轴后面跟了1个dp的分割线，可能会使时间轴和时间块不能完全对齐的情况出现。
+             */
+            System.out.println("时间轴的高度为："+ (int) (activities[i].endTime.getTime()-activities[i].startTime.getTime()));
+
+            //每日时间的毫秒数
+            int timeOfOneDay = 3600000*24;
+            float e = (float) (activities[i].endTime.getTime()-activities[i].startTime.getTime())/timeOfOneDay * 1500;
             Log.d("e",String.valueOf(e));
             linearParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, e, getResources().getDisplayMetrics())/* */;
             linearParams.setMargins(5,0,5,0);//修改按钮边距

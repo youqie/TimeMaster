@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.WeekView.WeekView">
 
-    <TableLayout xmlns:tools="http://schemas.android.com/tools"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        >
 
         <LinearLayout
 
@@ -67,252 +66,224 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:baselineAligned="true">
 
-                <LinearLayout
-                    android:layout_width="71dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/time0"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
-                        android:text="上午0时" />
+                <LinearLayout
+                    android:id="@+id/timeLinearLayout"
+                    android:layout_width="71dp"
+                    android:layout_height="1500dp"
+                    android:divider="@drawable/divider"
+                    android:orientation="vertical"
+                    android:showDividers="middle|end">
 
                     <TextView
                         android:id="@+id/time1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="上午1时" />
 
                     <TextView
                         android:id="@+id/time2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="上午2时" />
 
                     <TextView
                         android:id="@+id/time3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_weight="1"
-
-                        android:gravity="center"
+                        android:gravity="bottom|center"
                         android:text="上午3时" />
 
                     <TextView
                         android:id="@+id/time4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+
+                        android:gravity="bottom|center"
                         android:text="上午4时" />
 
                     <TextView
                         android:id="@+id/time5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+
+                        android:gravity="bottom|center"
                         android:text="上午5时" />
 
                     <TextView
                         android:id="@+id/time6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+
+                        android:gravity="bottom|center"
                         android:text="上午6时" />
 
                     <TextView
                         android:id="@+id/time7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
 
+                        android:gravity="bottom|center"
                         android:text="上午7时" />
 
                     <TextView
                         android:id="@+id/time8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="上午8时" />
 
                     <TextView
                         android:id="@+id/time9"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="上午9时" />
 
                     <TextView
                         android:id="@+id/time10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="上午10时" />
 
                     <TextView
                         android:id="@+id/time11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="上午11时" />
 
                     <TextView
                         android:id="@+id/time12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="上午12时" />
 
                     <TextView
                         android:id="@+id/time13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午1时" />
 
                     <TextView
                         android:id="@+id/time14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午2时" />
 
                     <TextView
                         android:id="@+id/time15"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午3时" />
 
                     <TextView
                         android:id="@+id/time16"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午4时" />
 
                     <TextView
                         android:id="@+id/time17"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午5时" />
 
                     <TextView
                         android:id="@+id/time18"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午6时" />
 
                     <TextView
                         android:id="@+id/time19"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午7时" />
 
                     <TextView
                         android:id="@+id/time20"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午8时" />
 
                     <TextView
                         android:id="@+id/time21"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午9时" />
 
                     <TextView
                         android:id="@+id/time22"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午10时" />
 
                     <TextView
                         android:id="@+id/time23"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
+
                         android:text="下午11时" />
 
                     <TextView
                         android:id="@+id/time24"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center"
                         android:text="下午12时" />
 
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:id="@+id/mondayLayout"
                     android:layout_width="0.0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
                 <LinearLayout
                     android:id="@+id/tuesdayLayout"
