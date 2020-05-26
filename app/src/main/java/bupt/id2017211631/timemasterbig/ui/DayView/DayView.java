@@ -31,6 +31,7 @@ import bupt.id2017211631.timemasterbig.ui.EventDialog;
 
 public class DayView extends Fragment {
 
+    View view;
     public static Handler handler = new Handler();
     //顶部tag
     Tag[] tags;
@@ -49,10 +50,11 @@ public class DayView extends Fragment {
     private Runnable RefreshLable = new Runnable() {
         public void run() {
             this.update();
-            handler.postDelayed(this, 1000 * 30);// 间隔30秒
+            handler.postDelayed(this, 1000 * 15);// 间隔30秒
         }
 
         void update() {
+            initTag(view);
             initRightData();
             initRightView();
         }
@@ -60,7 +62,7 @@ public class DayView extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.fragment_dayview, null);
+        view = View.inflate(getActivity(), R.layout.fragment_dayview, null);
 
         dbAdapter = new DBAdapter(getContext());
         dbAdapter.open(); //启动数据库
