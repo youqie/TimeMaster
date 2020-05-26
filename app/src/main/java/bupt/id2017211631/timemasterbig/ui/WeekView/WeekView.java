@@ -26,7 +26,7 @@ import bupt.id2017211631.timemasterbig.SQL.Tag;
 public class WeekView extends Fragment {
 
     LinearLayout mondayPast;
-    Button test;
+    Button shrink;
     boolean isExp;
     CalendarLayout calendarLayout ;
     CalendarView monthView;
@@ -79,6 +79,23 @@ public class WeekView extends Fragment {
 
         isExp = calendarLayout.isExpand();
 
+        shrink = view.findViewById(R.id.shrinkMonthView);
+
+        shrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isExp){
+                    calendarLayout.hideCalendarView();
+                    shrink.setText("展开月视图");
+                    isExp = false;
+                }
+                else{
+                    calendarLayout.showCalendarView();
+                    shrink.setText("收起月视图");
+                    isExp = true;
+                }
+            }
+        });
         /**
          * 用户点击月视图中的日期事件
          * 周视图同步跳转到相应的位置
@@ -97,7 +114,8 @@ public class WeekView extends Fragment {
                 //Log.d(b,String.valueOf(a));
 
 
-                //插入测试数据
+//                dbAdapter.deleteAllActivity();
+//                //插入测试数据
 //                dbAdapter.insertActivity(testactivitiesList[0]);
 //                dbAdapter.insertActivity(testactivitiesList[1]);
 //                dbAdapter.insertActivity(testactivitiesList[2]);
@@ -154,6 +172,15 @@ public class WeekView extends Fragment {
 
                 weekView.scrollToCalendar(a.getYear(),a.getMonth(),a.getDay());
 
+                if (activitiesList == null){
+                    mondayLayout.removeAllViews();
+                    tuesdayLayout.removeAllViews();
+                    wednesLayout.removeAllViews();
+                    thursdayLayout.removeAllViews();
+                    fridayLayout.removeAllViews();
+                    saturdayLayout.removeAllViews();
+                    sundayLayout.removeAllViews();
+                }
                 if(null != activitiesList){
                     //System.out.println("数组长度：" + activitiesList.length);
                     showWeekView(activitiesList);
@@ -161,8 +188,10 @@ public class WeekView extends Fragment {
             }
         });
 
+        showWeekView();
         return view;
     }
+
 
     //输入某一天，判断是周几，并显示在weekView中
     private void showWeekView(Activity[] activities){
@@ -194,7 +223,6 @@ public class WeekView extends Fragment {
             week = (d+2*m+3*(m+1)/5+y+y/4-y/100+y/400+1)%7; //判断某个日期是在某一周的周几
             switch(week){
                 //变换layout
-
                 case 1:linearLayout = mondayLayout;break;
                 case 2:linearLayout = tuesdayLayout;break;
                 case 3:linearLayout = wednesLayout;break;
@@ -231,5 +259,76 @@ public class WeekView extends Fragment {
             }
         }
 
+    }
+
+    //没有参数的时候，默认显示当天的周视图
+    private void showWeekView(){
+        Calendar a = monthView.getSelectedCalendar();
+        String b = String.valueOf(a.getWeek());
+
+        //获取点击日期的年月日
+        int y = a.getYear();
+        int m = a.getMonth();
+        int d = a.getDay();
+        System.out.println("日期为:" + y + m + d );
+
+        //该周的周一
+        Date firstdate ;
+
+        //该周的周日
+        Date lastdate ;
+
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(y,m-1,d);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        int dayWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);//获得当前日期是一个星期的第几天
+        if(1 == dayWeek) {
+            cal.add(java.util.Calendar.DAY_OF_MONTH, -1);
+        }
+        //设置一个星期的第一天
+        cal.setFirstDayOfWeek(java.util.Calendar.MONDAY);
+
+        //获得当前日期是一个星期的第几天
+        int day = cal.get(java.util.Calendar.DAY_OF_WEEK);
+
+        //根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
+        cal.add(java.util.Calendar.DATE, cal.getFirstDayOfWeek()-day);
+
+        //System.out.println("所在周星期一的日期："+sdf.format(cal.getTime()));
+
+        //将java.util.date转换为java.sql.date用来查询
+        firstdate = cal.getTime();
+        java.sql.Date sqlfirstdate = new java.sql.Date(firstdate.getTime());
+        //System.out.println(cal.getFirstDayOfWeek()+"-"+day+"+6="+(cal.getFirstDayOfWeek()-day+6));
+        cal.add(java.util.Calendar.DATE, 6);
+        //System.out.println("所在周星期日的日期："+sdf.format(cal.getTime()));
+
+        lastdate = cal.getTime();
+        java.sql.Date sqllastdate = new java.sql.Date(lastdate.getTime());
+
+        //查询某个时间段的所有数据(一周)
+        activitiesList = dbAdapter.queryActivityByTime(sqlfirstdate,sqllastdate);
+
+        //查询所有数据
+        //activitiesList =dbAdapter.queryAllActivity();
+
+        //删除所有数据
+        //dbAdapter.deleteAllActivity();
+
+        weekView.scrollToCalendar(a.getYear(),a.getMonth(),a.getDay());
+
+        if (activitiesList == null){
+            mondayLayout.removeAllViews();
+            tuesdayLayout.removeAllViews();
+            wednesLayout.removeAllViews();
+            thursdayLayout.removeAllViews();
+            fridayLayout.removeAllViews();
+            saturdayLayout.removeAllViews();
+            sundayLayout.removeAllViews();
+        }
+        if(null != activitiesList){
+            //System.out.println("数组长度：" + activitiesList.length);
+            showWeekView(activitiesList);
+        }
     }
 }
