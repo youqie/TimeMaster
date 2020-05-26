@@ -115,12 +115,12 @@ public class WeekView extends Fragment {
                 //Log.d(b,String.valueOf(a));
 
 
-                dbAdapter.deleteAllActivity();
-                //插入测试数据
-                dbAdapter.insertActivity(testactivitiesList[0]);
-                dbAdapter.insertActivity(testactivitiesList[1]);
-                dbAdapter.insertActivity(testactivitiesList[2]);
-                dbAdapter.insertActivity(testactivitiesList[3]);
+//                dbAdapter.deleteAllActivity();
+//                //插入测试数据
+//                dbAdapter.insertActivity(testactivitiesList[0]);
+//                dbAdapter.insertActivity(testactivitiesList[1]);
+//                dbAdapter.insertActivity(testactivitiesList[2]);
+//                dbAdapter.insertActivity(testactivitiesList[3]);
 
                 //获取点击日期的年月日
                 int y = a.getYear();
@@ -274,6 +274,15 @@ public class WeekView extends Fragment {
 
     //没有参数的时候，默认显示当天的周视图
     private void showWeekView(){
+        //清理界面
+        mondayLayout.removeAllViews();
+        tuesdayLayout.removeAllViews();
+        wednesLayout.removeAllViews();
+        thursdayLayout.removeAllViews();
+        fridayLayout.removeAllViews();
+        saturdayLayout.removeAllViews();
+        sundayLayout.removeAllViews();
+
         Calendar a = monthView.getSelectedCalendar();
         String b = String.valueOf(a.getWeek());
 
