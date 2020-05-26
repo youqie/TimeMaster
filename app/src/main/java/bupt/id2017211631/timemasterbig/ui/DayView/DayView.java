@@ -146,9 +146,12 @@ public class DayView extends Fragment {
                 Activity activities = (Activity) parent.getAdapter().getItem(position);
 
                 // TO-DO change id to correct
+                if(!activities.tag.equals(""))
+                {
                 EventDialog.newInstance(id).show(getFragmentManager(), "event_dialog");
 
-                Toast.makeText(getActivity(), "点击", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "点击", Toast.LENGTH_LONG).show();}
+
             }
         });
     }
