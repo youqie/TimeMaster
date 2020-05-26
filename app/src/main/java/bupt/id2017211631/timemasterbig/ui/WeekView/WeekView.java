@@ -1,6 +1,11 @@
 package bupt.id2017211631.timemasterbig.ui.WeekView;
 
+
 import android.graphics.Color;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -131,7 +136,8 @@ public class WeekView extends Fragment {
 
 
     //输入活动数组，将数组中所有的活动显示在周视图里
-    private void showWeekView(Activity[] activities,int week){
+
+    private void showWeekView(final Activity[] activities,int week){
         Tag[] tags =dbAdapter.queryAllTag();
         LinearLayout linearLayout = null;
         switch(week){
@@ -198,7 +204,13 @@ public class WeekView extends Fragment {
             linearParams.setMargins(5,0,5,0);//修改按钮边距
             buttons[i].setLayoutParams(linearParams);
             buttons[i].setText(activities[i].tag);
-
+            final int finalI = i;
+            buttons[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showdialog(activities[finalI]);
+                }
+            });
             //System.out.println("颜色数组长度"+tags.length);
             //System.out.println(activities[i].tag);
             //显示颜色
@@ -333,5 +345,19 @@ public class WeekView extends Fragment {
             currentdate = cal.getTime();
             sqlcurrentdate = new java.sql.Date(currentdate.getTime());
         }
+    }
+    private void showdialog(Activity activity){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle(activity.tag+ " 于 "+ activity.date)
+                .setMessage("备注: "+activity.note +"\n时间："+activity.startTime+"----"+activity.endTime).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        builder.create().show();
     }
 }
