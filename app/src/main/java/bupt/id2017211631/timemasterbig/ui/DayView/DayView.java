@@ -54,11 +54,24 @@ public class DayView extends Fragment {
         }
 
         void update() {
-            initTag(view);
             initRightData();
             initRightView();
         }
     };
+
+    public Runnable refreshTag = new Runnable() {
+        public void run() {
+            initTag(view);
+        }
+    };
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        handler.post(refreshTag);
+        handler.post(RefreshLable);// 间隔120秒
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +90,8 @@ public class DayView extends Fragment {
 
         return view;
     }
+
+
 
     public void findView(View view) {
         title_horsv = (MyHorizontalScrollView) view.findViewById(R.id.title_horsv);
@@ -123,6 +138,7 @@ public class DayView extends Fragment {
         }
 
         leftList.add("24:00");
+        leftList.add("24:00");
     }
 
     private void initLeftView() {
@@ -154,7 +170,7 @@ public class DayView extends Fragment {
 
                     // TO-DO change id to correct
                     if (!activities.tag.equals("")) {
-                        EventDialog.newInstance(id).show(getFragmentManager(), "event_dialog");
+                        EventDialog.newInstance(activities.ID).show(getFragmentManager(), "event_dialog");
                     }
 
                 }
