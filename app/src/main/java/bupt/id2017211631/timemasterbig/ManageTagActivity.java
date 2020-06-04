@@ -10,12 +10,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bupt.id2017211631.timemasterbig.SQL.Tag;
 import bupt.id2017211631.timemasterbig.SQL.DBAdapter;
+import bupt.id2017211631.timemasterbig.adapter.ColorAdapter;
 
 public class ManageTagActivity extends AppCompatActivity {
 
     String[] tagsList;
+    List<Integer> colorList = new ArrayList<>();;
 
     DBAdapter dbAdepter;
 
@@ -25,7 +30,7 @@ public class ManageTagActivity extends AppCompatActivity {
     Button addBtn;
     Button updateBtn;
     EditText newTagView;
-    EditText color;
+    Spinner color;
 
 
     @Override
@@ -40,7 +45,7 @@ public class ManageTagActivity extends AppCompatActivity {
         cancelBtn = (Button) findViewById(R.id.cancel);
         tag = (Spinner) findViewById(R.id.Spinner01);
         newTagView = (EditText) findViewById(R.id.editText3);
-        color = (EditText) findViewById(R.id.editText2);
+        color = (Spinner) findViewById(R.id.Spinner02);
 
         dbAdepter = new DBAdapter(this);
         dbAdepter.open();//启动数据库
@@ -68,33 +73,29 @@ public class ManageTagActivity extends AppCompatActivity {
         });
 
         setTagsDropdown(); // 设置下拉选择框
+        setColorsDropdown();
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Tag[] newtag = dbAdepter.queryTagByname(newTagView.getText().toString());
                 if(newtag!=null)
-                {try{//newtag[0].color = Color.parseColor(color.getText().toString());
+                {//newtag[0].color = Color.parseColor(color.getText().toString());
                     newtag[0].isShow=1;
                     dbAdepter.updateTag(newtag[0]);
                     Toast.makeText(ManageTagActivity.this,"新增"+newtag[0].name+"标签"
                             , Toast.LENGTH_LONG).show();
                 }
-                 catch (Exception e) {color.setText("颜色不合法");}
-                }
                 else
                 {
-                   try
-                   {
                         Tag addtag = new Tag();
                         addtag.name=newTagView.getText().toString();
-                        addtag.color= Color.parseColor(color.getText().toString());
+//                        addtag.color= Color.parseColor(color.getText().toString());
+                        addtag.color = Integer.parseInt(color.getSelectedItem().toString());
                         addtag.isShow=1;
                         dbAdepter.insertTag(addtag);
                        Toast.makeText(ManageTagActivity.this,"新增"+newtag[0].name+"标签"
                                , Toast.LENGTH_LONG).show();
-                   }
-                   catch (Exception e) {color.setText("颜色不合法");}
                 }
             }
         });
@@ -103,12 +104,12 @@ public class ManageTagActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Tag[] newtag = dbAdepter.queryTagByname(tag.getSelectedItem().toString());
-                try{newtag[0].color = Color.parseColor(color.getText().toString());
+               newtag[0].color = Integer.parseInt(color.getSelectedItem().toString());
                     dbAdepter.updateTag(newtag[0]);
-                    Toast.makeText(ManageTagActivity.this,"修改"+newtag[0].name+"颜色为"+color.getText().toString()
+                    Toast.makeText(ManageTagActivity.this,"修改"+newtag[0].name+"颜色为"+
+                            Integer.parseInt(color.getSelectedItem().toString())
                             , Toast.LENGTH_LONG).show();
-                }
-                catch (Exception e) {color.setText("颜色不合法");}
+
             }
         });
 
@@ -141,5 +142,26 @@ public class ManageTagActivity extends AppCompatActivity {
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<String>(ManageTagActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, tagsList);
         tag.setAdapter(tagsAdapter);
+    }
+
+    private void setColorsDropdown() {
+
+        colorList.add(Color.rgb(243, 156, 18));
+        colorList.add(Color.rgb(26, 188, 156));
+        colorList.add(Color.rgb(52, 152, 219));
+        colorList.add(Color.rgb(254, 67, 101));
+        colorList.add(Color.rgb(44, 87, 201));
+        colorList.add(Color.rgb(84, 127, 153));
+        colorList.add(Color.rgb(66, 164, 210));
+        colorList.add(Color.rgb(120, 34, 142));
+        colorList.add(Color.rgb(230, 87, 31));
+
+//        // 设置标签下拉选择栏的Adapter
+//        ArrayAdapter<String> colorsAdapter = new ArrayAdapter<String>(ManageTagActivity.this,
+//                android.R.layout.simple_spinner_dropdown_item, tagsList);
+
+        ColorAdapter colorsAdapter = new ColorAdapter(ManageTagActivity.this,colorList);
+
+        color.setAdapter(colorsAdapter);
     }
 }

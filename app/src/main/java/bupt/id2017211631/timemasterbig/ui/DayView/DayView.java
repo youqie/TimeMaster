@@ -33,7 +33,9 @@ public class DayView extends Fragment {
 
     View view;
     public static Handler handler = new Handler();
+    Date date;
     //顶部tag
+    private List<String> daytag;
     Tag[] tags;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -55,22 +57,17 @@ public class DayView extends Fragment {
 
         void update() {
             initRightData();
+            initTag(view);
             initRightView();
         }
     };
 
-    public Runnable refreshTag = new Runnable() {
-        public void run() {
-            initTag(view);
-        }
-    };
 
 
     @Override
     public void onResume(){
         super.onResume();
-        handler.post(refreshTag);
-        handler.post(RefreshLable);// 间隔120秒
+        handler.post(RefreshLable);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -79,11 +76,11 @@ public class DayView extends Fragment {
             view = View.inflate(getActivity(), R.layout.fragment_dayview, null);
         }
 
+        date = new Date();
         dbAdapter = new DBAdapter(getContext());
         dbAdapter.open(); //启动数据库
 
         findView(view);
-        initTag(view);
         initLeftData();
         initLeftView();
         handler.post(RefreshLable);
@@ -109,7 +106,15 @@ public class DayView extends Fragment {
         LinearLayout tagList = (LinearLayout) view.findViewById(R.id.taglist);
         tagList.removeAllViews();
 
-        tags = dbAdapter.queryAllShowTag();
+        //tags = dbAdapter.queryAllShowTag();
+        tags = new Tag[daytag.size()];
+        int j=0;
+        for(int i=0;i<daytag.size();i++)
+        {
+            Tag[] tags1 = dbAdapter.queryTagByname(daytag.get(i));
+            if(tags1!=null && tags1[0].isShow==1)
+            {tags[j]=tags1[0];j++;}
+        }
 
         for (Tag tag : tags) {
             if (isAdded()) {
@@ -182,8 +187,8 @@ public class DayView extends Fragment {
     private void initRightData() {
 
         activitiesList = new ArrayList<>();
+        daytag =new ArrayList<>();
 
-        Date date = new Date();
         java.sql.Date datenow = Activity.strToDate(dateFormat.format(date)); // 日期
 
         Activity[] allactivities = dbAdapter.queryActivityByTime(datenow, datenow);
@@ -194,7 +199,7 @@ public class DayView extends Fragment {
                 if (!activity.startTime.toString().equals(time))
                     activitiesList.add(new Activity(1, "", datenow, Activity.strToTime(time)
                             , activity.startTime, ""));
-
+                if(daytag.indexOf(activity.tag)==-1) daytag.add(activity.tag);
                 time = activity.endTime.toString();
                 activitiesList.add(activity);
             }
