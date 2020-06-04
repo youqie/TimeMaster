@@ -52,8 +52,8 @@ public class WeekView extends Fragment {
     Activity activity2;
     Activity activity3;
     Activity activity4;
-    Activity[] activitiesList = new Activity[4];
-    Activity[] testactivitiesList = new Activity[4];
+    Activity[] activitiesList = new Activity[5];
+    Activity[] testactivitiesList = new Activity[5];
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +69,8 @@ public class WeekView extends Fragment {
                 ,Activity.strToTime("08:10:00"),""));
         testactivitiesList[3] = (new Activity(4,"吃饭",Activity.strToDate("2020-05-31"),Activity.strToTime("08:10:00")
                 ,Activity.strToTime("15:30:00"),""));
-
+        testactivitiesList[4] = (new Activity(5,"吃饭",Activity.strToDate("2020-06-01"),Activity.strToTime("08:10:00")
+                ,Activity.strToTime("15:30:00"),""));
 
 //        dbAdapter.deleteAllActivity();
 //        //插入测试数据
@@ -77,6 +78,7 @@ public class WeekView extends Fragment {
 //        dbAdapter.insertActivity(testactivitiesList[1]);
 //        dbAdapter.insertActivity(testactivitiesList[2]);
 //        dbAdapter.insertActivity(testactivitiesList[3]);
+//        dbAdapter.insertActivity(testactivitiesList[4]);
 
 
         calendarLayout = view.findViewById(R.id.calendarLayout);
@@ -125,12 +127,23 @@ public class WeekView extends Fragment {
 
             @Override
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
-                showWeekView();
+                showWeekView(calendar);
             }
         });
+        weekView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
+            @Override
+            public void onCalendarOutOfRange(Calendar calendar) {
 
+            }
+
+            @Override
+            public void onCalendarSelect(Calendar calendar, boolean isClick) {
+                //System.out.println("day:"+calendar.getDay());
+                showWeekView(calendar);
+            }
+        });
         //Create的时候就要调用一下这个显示周视图的函数，不然刚进来的时候不会自动显示
-        showWeekView();
+        showWeekView(monthView.getSelectedCalendar());
         return view;
     }
 
@@ -228,7 +241,7 @@ public class WeekView extends Fragment {
     }
 
     //没有参数的时候，默认显示当天的周视图
-    private void showWeekView(){
+    private void showWeekView(Calendar a){
         //清理界面
         mondayLayout.removeAllViews();
         tuesdayLayout.removeAllViews();
@@ -238,7 +251,7 @@ public class WeekView extends Fragment {
         saturdayLayout.removeAllViews();
         sundayLayout.removeAllViews();
 
-        Calendar a = monthView.getSelectedCalendar();
+
         String b = String.valueOf(a.getWeek());
 
         //获取点击日期的年月日
@@ -320,7 +333,7 @@ public class WeekView extends Fragment {
                  * 2.获取每一个活动占每日24小时的百分比，给每一个按钮分配相应的高度
                  * 注意：每一个时间轴后面跟了1个dp的分割线，可能会使时间轴和时间块不能完全对齐的情况出现。
                  */
-                System.out.println("时间轴的高度为："+ (int) (activitiesList[0].endTime.getTime()-activitiesList[0].startTime.getTime()));
+                //System.out.println("时间轴的高度为："+ (int) (activitiesList[0].endTime.getTime()-activitiesList[0].startTime.getTime()));
 
                 //每日时间的毫秒数
                 int timeOfOneDay = 3600000*24;
@@ -333,12 +346,12 @@ public class WeekView extends Fragment {
                 blank.setBackgroundColor(Color.TRANSPARENT);
 
                 showWeekView(activitiesList,cal.get(java.util.Calendar.DAY_OF_WEEK)-1);
-                System.out.println("5.31:" + String.valueOf(cal.get(java.util.Calendar.DAY_OF_WEEK)-1));
+                //System.out.println("5.31:" + String.valueOf(cal.get(java.util.Calendar.DAY_OF_WEEK)-1));
             }
             else{
                 //System.out.println("数组长度：" + activitiesList.length);
                 showWeekView(activitiesList,cal.get(java.util.Calendar.DAY_OF_WEEK)-1);
-                System.out.println("456" + String.valueOf(cal.get(java.util.Calendar.DAY_OF_WEEK)-1));
+                //System.out.println("456" + String.valueOf(cal.get(java.util.Calendar.DAY_OF_WEEK)-1));
             }
 
             cal.add(java.util.Calendar.DATE,1);
