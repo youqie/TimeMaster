@@ -145,7 +145,11 @@ public class ChartView extends Fragment {
             long ret = 0;
             for (Activity re : res) {
                 if (re.tag.equals(tag)) {
-                    ret += re.endTime.getTime() - re.startTime.getTime();
+                    if (re.endTime.toString().equals("23:59:59")&&re.date.toString().equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))){
+                        ret += (new Date().getTime() - re.startTime.getTime())/DateUtils.DAY_IN_MILLIS;
+                    }else{
+                        ret += re.endTime.getTime() - re.startTime.getTime();
+                    }
                 }
             }
             return (float) ret / DateUtils.HOUR_IN_MILLIS;
@@ -157,7 +161,11 @@ public class ChartView extends Fragment {
             long ret = 0;
             for (Activity re : res) {
                 if (re.tag.equals(tag)) {
-                    ret += re.endTime.getTime() - re.startTime.getTime();
+                    if (re.endTime.toString().equals("23:59:59")&&re.date.toString().equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))){
+                        ret += (new Date().getTime() - re.startTime.getTime())/DateUtils.DAY_IN_MILLIS;
+                    }else{
+                        ret += re.endTime.getTime() - re.startTime.getTime();
+                    }
                 }
             }
             return (float) ret / DateUtils.HOUR_IN_MILLIS;
