@@ -48,8 +48,8 @@ public class ChartView extends Fragment {
 
     PlaceholderFragment placeholderFragment;
 
-    String formatTime(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
+    public static String formatTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd", Locale.CHINESE);
         return format.format(date);
     }
 

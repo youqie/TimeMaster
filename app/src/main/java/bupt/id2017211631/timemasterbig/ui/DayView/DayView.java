@@ -1,5 +1,6 @@
 package bupt.id2017211631.timemasterbig.ui.DayView;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,7 @@ import bupt.id2017211631.timemasterbig.SQL.Tag;
 import bupt.id2017211631.timemasterbig.UtilTools;
 import bupt.id2017211631.timemasterbig.adapter.ALeftAdapter;
 import bupt.id2017211631.timemasterbig.adapter.ARightAdapter;
+import bupt.id2017211631.timemasterbig.ui.ChartView.ChartView;
 import bupt.id2017211631.timemasterbig.ui.EventDialog;
 
 public class DayView extends Fragment {
@@ -49,6 +52,7 @@ public class DayView extends Fragment {
             activitiesList;
     private MyHorizontalScrollView title_horsv;
     private MyHorizontalScrollView content_horsv;
+    private TextView datetext;
     private Runnable RefreshLable = new Runnable() {
         public void run() {
             this.update();
@@ -70,17 +74,44 @@ public class DayView extends Fragment {
         handler.post(RefreshLable);
     }
 
+    void setDateOnClickListener(View DatePicker, final TextView DateText, final Calendar DateCalendar, final Date date) {
+
+        DatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {        date.setTime(DateCalendar.getTime().getTime());
+                                DateCalendar.set(Calendar.YEAR, year);
+                                DateCalendar.set(Calendar.MONTH, month);
+                                DateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                date.setTime(DateCalendar.getTime().getTime());
+                                handler.post(RefreshLable);
+                                DateText.setText(ChartView.formatTime(date));
+                            }
+                        },
+                        DateCalendar.get(Calendar.YEAR),
+                        DateCalendar.get(Calendar.MONTH),
+                        DateCalendar.get(Calendar.DAY_OF_MONTH));
+                dialog.show();
+            }
+        });
+    }
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         if (isAdded()) {
             view = View.inflate(getActivity(), R.layout.fragment_dayview, null);
         }
 
-        date = new Date();
+
         dbAdapter = new DBAdapter(getContext());
         dbAdapter.open(); //启动数据库
 
         findView(view);
+        initDate();
         initLeftData();
         initLeftView();
         handler.post(RefreshLable);
@@ -89,12 +120,20 @@ public class DayView extends Fragment {
     }
 
 
+    public void initDate()
+    {
+        date = new Date();
+        Calendar DateCalendar = Calendar.getInstance();
+        datetext.setText(ChartView.formatTime(date));
+        setDateOnClickListener(datetext, datetext, DateCalendar, date);
+    }
 
     public void findView(View view) {
         title_horsv = (MyHorizontalScrollView) view.findViewById(R.id.title_horsv);
         left_container_listview = (ListView) view.findViewById(R.id.left_container_listview);
         content_horsv = (MyHorizontalScrollView) view.findViewById(R.id.content_horsv);
         right_container_listview = (ListView) view.findViewById(R.id.right_container_listview);
+        datetext = (TextView) view.findViewById(R.id.dayview_time);
     }
 
     public void initTag(View view) {
