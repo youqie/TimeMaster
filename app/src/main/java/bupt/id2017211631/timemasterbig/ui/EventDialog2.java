@@ -21,6 +21,7 @@ import bupt.id2017211631.timemasterbig.R;
 import bupt.id2017211631.timemasterbig.SQL.Activity;
 import bupt.id2017211631.timemasterbig.SQL.DBAdapter;
 import bupt.id2017211631.timemasterbig.SQL.Tag;
+import bupt.id2017211631.timemasterbig.ui.DayView.DayView;
 
 
 public class EventDialog2 extends DialogFragment {
@@ -124,6 +125,7 @@ public class EventDialog2 extends DialogFragment {
 
                         dbAdapter.close();
                         dialog.dismiss();
+
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

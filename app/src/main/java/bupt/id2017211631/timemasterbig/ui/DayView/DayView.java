@@ -58,10 +58,10 @@ public class DayView extends Fragment {
     private MyHorizontalScrollView title_horsv;
     private MyHorizontalScrollView content_horsv;
     private TextView datetext;
-    private Runnable RefreshLable = new Runnable() {
+    public Runnable RefreshLable = new Runnable() {
         public void run() {
             this.update();
-            handler.postDelayed(this, 1000 * 15);// 间隔15秒
+            handler.postDelayed(this, 1000 * 5);// 间隔15秒
         }
 
         void update() {
@@ -70,6 +70,7 @@ public class DayView extends Fragment {
             initRightView();
         }
     };
+
 
     @Override
     public void onResume(){
