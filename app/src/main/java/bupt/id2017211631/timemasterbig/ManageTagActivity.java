@@ -3,6 +3,8 @@ package bupt.id2017211631.timemasterbig;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,7 +22,7 @@ import bupt.id2017211631.timemasterbig.adapter.ColorAdapter;
 public class ManageTagActivity extends AppCompatActivity {
 
     String[] tagsList;
-    List<Integer> colorList = new ArrayList<>();;
+    List<Integer> colorList = new ArrayList<>();
 
     DBAdapter dbAdepter;
 
@@ -32,38 +34,29 @@ public class ManageTagActivity extends AppCompatActivity {
     EditText newTagView;
     Spinner color;
 
+    private Toolbar mActionBarToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_tag);
 
+        mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+        getSupportActionBar().setTitle("管理标签");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // View addView = View.inflate(this, R.layout.activity_add, null);
-        addBtn = (Button) findViewById(R.id.add);
-        updateBtn = (Button) findViewById(R.id.update);
-        deleteBtn = (Button) findViewById(R.id.delete);
-        cancelBtn = (Button) findViewById(R.id.cancel);
-        tag = (Spinner) findViewById(R.id.Spinner01);
-        newTagView = (EditText) findViewById(R.id.editText3);
-        color = (Spinner) findViewById(R.id.Spinner02);
+        addBtn = findViewById(R.id.add);
+        updateBtn = findViewById(R.id.update);
+        deleteBtn = findViewById(R.id.delete);
+        cancelBtn = findViewById(R.id.cancel);
+        tag = findViewById(R.id.Spinner01);
+        newTagView = findViewById(R.id.editText3);
+        color = findViewById(R.id.Spinner02);
 
         dbAdepter = new DBAdapter(this);
         dbAdepter.open();//启动数据库
 
-
-//        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_add);
-//        toolbar.setTitle("");
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-//        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
-//
-//        // 返回按键
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
         // 取消按钮
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +115,17 @@ public class ManageTagActivity extends AppCompatActivity {
                Toast.makeText(ManageTagActivity.this,"删除"+newtag[0].name+"成功", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 
 

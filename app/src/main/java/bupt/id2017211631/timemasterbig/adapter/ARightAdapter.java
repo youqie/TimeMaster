@@ -73,7 +73,7 @@ public class ARightAdapter extends BaseAdapter {
         if (convertView == null) {
 
             convertView = LayoutInflater.from(context).inflate(R.layout.layout_right_item_a, parent,false);
-            LinearLayout liner = (LinearLayout)convertView.findViewById(R.id.activitylist);
+            LinearLayout liner = convertView.findViewById(R.id.activitylist);
 
             if(activities.endTime.toString().equals("23:59:59") && activities.date.toString().equals(datenow))
              time=(Activity.strToTime(timenow).getTime()-activities.startTime.getTime())/900000.0;
@@ -92,7 +92,7 @@ public class ARightAdapter extends BaseAdapter {
             {
 
                 View itemview = LayoutInflater.from(context).inflate(R.layout.layout_right_itme2, null);
-                TextView item = (TextView) itemview.findViewById(R.id.right_item);
+                TextView item = itemview.findViewById(R.id.right_item);
                 item.getLayoutParams().height= itemhight;
                 viewHold.textView[i]=item;
                 if(activities.tag.equals(tag.name)) viewHold.textView[i].setBackgroundColor(tag.color);
@@ -111,7 +111,7 @@ public class ARightAdapter extends BaseAdapter {
 
     static class ViewHold {
 
-       TextView textView[];
+       TextView[] textView;
 
        ViewHold(int tagnumber)
        {

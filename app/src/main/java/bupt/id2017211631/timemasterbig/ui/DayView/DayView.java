@@ -2,9 +2,11 @@ package bupt.id2017211631.timemasterbig.ui.DayView;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import bupt.id2017211631.timemasterbig.AddActivity;
+import bupt.id2017211631.timemasterbig.MainActivity;
 import bupt.id2017211631.timemasterbig.MyHorizontalScrollView;
 import bupt.id2017211631.timemasterbig.R;
 import bupt.id2017211631.timemasterbig.SQL.Activity;
@@ -111,6 +115,15 @@ public class DayView extends Fragment {
         dbAdapter = new DBAdapter(getContext());
         dbAdapter.open(); //启动数据库
 
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
         findView(view);
         initDate();
         initLeftData();
@@ -143,7 +156,7 @@ public class DayView extends Fragment {
                     (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        LinearLayout tagList = (LinearLayout) view.findViewById(R.id.taglist);
+        LinearLayout tagList = view.findViewById(R.id.taglist);
         tagList.removeAllViews();
 
         //tags = dbAdapter.queryAllShowTag();
@@ -159,7 +172,7 @@ public class DayView extends Fragment {
         for (Tag tag : tags) {
             if (isAdded()) {
                 View tagview = android.view.LayoutInflater.from(getActivity()).inflate(R.layout.layout_tagname, null);
-                TextView text = (TextView) tagview.findViewById(R.id.tag);
+                TextView text = tagview.findViewById(R.id.tag);
                 text.setText(tag.name);
                 //text.setId(i);
                 tagList.addView(tagview);

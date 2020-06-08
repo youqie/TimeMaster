@@ -10,7 +10,7 @@
     <string name="menu_home">日视图</string>
     <string name="menu_gallery">月视图</string>
     <string name="menu_slideshow">数据统计</string>
-    <string name="menu_managetag">管理标签</string>
+    <string name="menu_managetag">备份与恢复</string>
 
     <string name="home_second">Home Second</string>
 </resources>

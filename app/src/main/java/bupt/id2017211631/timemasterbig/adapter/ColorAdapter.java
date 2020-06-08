@@ -50,7 +50,7 @@ public class ColorAdapter extends BaseAdapter {
         if (convertView==null) {
             hold=new ColorViewHold();
             convertView= LayoutInflater.from(context).inflate(android.R.layout.simple_spinner_dropdown_item, null);
-            hold.View=(CheckedTextView) convertView.findViewById(android.R.id.text1);
+            hold.View= convertView.findViewById(android.R.id.text1);
             convertView.setTag(hold);
         }else {
             hold=(ColorViewHold) convertView.getTag();
