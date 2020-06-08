@@ -3,7 +3,10 @@ package bupt.id2017211631.timemasterbig;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +54,10 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
                 fileCopy(dbFile, backup);
                 fileCopy(dbFile_shm, backup_shm);
                 fileCopy(dbFile_wal, backup_wal);
+                Looper.prepare();
+                Toast toast=Toast.makeText(mContext,"备份成功",Toast.LENGTH_SHORT);
+                toast.show();
+                Looper.loop();
                 return Log.d("backup", "ok");
             } catch (Exception e) {
                 // TODO: handle exception
@@ -62,6 +69,10 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
                 fileCopy(backup, dbFile);
                 fileCopy(backup_shm, dbFile_shm);
                 fileCopy(backup_wal, dbFile_wal);
+                Looper.prepare();
+                Toast toast=Toast.makeText(mContext,"恢复成功",Toast.LENGTH_SHORT);
+                toast.show();
+                Looper.loop();
                 return Log.d("restore", "success");
             } catch (Exception e) {
                 // TODO: handle exception

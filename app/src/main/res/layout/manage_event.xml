@@ -73,4 +73,14 @@
         android:paddingTop="4dp"
         android:paddingRight="4dp"
         android:paddingBottom="16dp" />
+
+    <Button
+        android:id="@+id/activity_delete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ems="10"
+        android:text="删除" />
+
+
 </LinearLayout>

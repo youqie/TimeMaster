@@ -24,7 +24,7 @@
             android:id="@+id/cancelBU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="取消备份" />
+            android:text="返回" />
     </LinearLayout>
 
 

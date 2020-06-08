@@ -30,7 +30,7 @@
                 android:id="@+id/cancelRC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="取消恢复" />
+                android:text="返回" />
         </LinearLayout>
 
     </LinearLayout>

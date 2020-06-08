@@ -48,8 +48,8 @@ public class ChartView extends Fragment {
 
     PlaceholderFragment placeholderFragment;
 
-    String formatTime(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
+    public static String formatTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd", Locale.CHINESE);
         return format.format(date);
     }
 
@@ -217,6 +217,8 @@ public class ChartView extends Fragment {
         private void generateInitialLineData() {
             long Start = startDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS, End = endDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS;
             int size = (int) ((End - Start) / DateUtils.DAY_IN_MILLIS);
+            Start = startDate.getTime();
+            End=Start+size*DateUtils.DAY_IN_MILLIS;
 
 
             List<AxisValue> axisValues = new ArrayList<AxisValue>();
@@ -258,7 +260,7 @@ public class ChartView extends Fragment {
         }
 
         private void generateLineData(int color, float range, int index) {
-            long Start = startDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS;
+            long Start = startDate.getTime() ;
             String tags;
             if (index == -1) {
                 tags = null;
@@ -323,8 +325,8 @@ public class ChartView extends Fragment {
             @Override
             public void onValueSelected(int lineIndex, int pointIndex, PointValue pointValue) {
                 if (tag == null) return;
-                long Start = startDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS;
-                long Now = (Start + DateUtils.DAY_IN_MILLIS);
+                long Start = startDate.getTime() ;
+                long Now = (Start + DateUtils.DAY_IN_MILLIS*pointIndex);
                 String date = getDay(Now);
                 if (pointValue.getY() * 60 > 120) {
                     Toast.makeText(context, "在" + date + "，共花费了约" + (float) (Math.round(pointValue.getY() * 10)) / 10 + "小时在" + tag + "上", Toast.LENGTH_SHORT).show();

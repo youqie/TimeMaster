@@ -3,6 +3,8 @@ package bupt.id2017211631.timemasterbig;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,11 +34,16 @@ public class ManageTagActivity extends AppCompatActivity {
     EditText newTagView;
     Spinner color;
 
+    private Toolbar mActionBarToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_tag);
+
+        mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+        getSupportActionBar().setTitle("管理标签");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // View addView = View.inflate(this, R.layout.activity_add, null);
         addBtn = findViewById(R.id.add);
@@ -50,20 +57,6 @@ public class ManageTagActivity extends AppCompatActivity {
         dbAdepter = new DBAdapter(this);
         dbAdepter.open();//启动数据库
 
-
-//        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_add);
-//        toolbar.setTitle("");
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-//        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
-//
-//        // 返回按键
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
         // 取消按钮
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +87,7 @@ public class ManageTagActivity extends AppCompatActivity {
                         addtag.color = Integer.parseInt(color.getSelectedItem().toString());
                         addtag.isShow=1;
                         dbAdepter.insertTag(addtag);
-                       Toast.makeText(ManageTagActivity.this,"新增"+newtag[0].name+"标签"
+                       Toast.makeText(ManageTagActivity.this,"新增"+addtag.name+"标签"
                                , Toast.LENGTH_LONG).show();
                 }
             }
@@ -122,6 +115,17 @@ public class ManageTagActivity extends AppCompatActivity {
                Toast.makeText(ManageTagActivity.this,"删除"+newtag[0].name+"成功", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 
 

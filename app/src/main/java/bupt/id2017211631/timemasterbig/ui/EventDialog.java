@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class EventDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.manage_event, null);
+        Button button = view.findViewById(R.id.activity_delete);
         TextView event_day = view.findViewById(R.id.event_day);
         event_day.setText(activity.date.toString());
         TextView event_start_time = view.findViewById(R.id.event_start_time);
@@ -53,6 +55,13 @@ public class EventDialog extends DialogFragment {
         title.setBackgroundColor(dbAdapter.queryTagByname(activity.tag)[0].color);
         final EditText editText = view.findViewById(R.id.event_note);
         editText.setText(activity.note);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dbAdapter.deleteOneActivity(activity.ID);
+                getDialog().dismiss();
+            }
+        });
         builder.setView(view)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override

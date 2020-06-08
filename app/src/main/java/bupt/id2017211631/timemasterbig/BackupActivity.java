@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +19,29 @@ public class BackupActivity extends AppCompatActivity {
     private List<String> tabs = new ArrayList<>();
     private ViewPager viewPager;
     private TabLayout tabLayout;
-
+    private Toolbar mActionBarToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup);
+        mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+        getSupportActionBar().setTitle("备份与恢复");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initData();
         initView();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
+
 
     private void initData() {
         tabs.add("备份");

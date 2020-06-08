@@ -22,7 +22,9 @@ import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import bupt.id2017211631.timemasterbig.R;
 import bupt.id2017211631.timemasterbig.SQL.Activity;
@@ -46,13 +48,14 @@ public class WeekView extends Fragment {
     LinearLayout saturdayLayout;
     LinearLayout sundayLayout;
 
+    private List<Activity> activitiesList;
 
     DBAdapter dbAdapter;
     Activity activity1 = new Activity();
     Activity activity2;
     Activity activity3;
     Activity activity4;
-    Activity[] activitiesList = new Activity[5];
+    Activity[] activities = new Activity[5];
     Activity[] testactivitiesList = new Activity[5];
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,16 +64,6 @@ public class WeekView extends Fragment {
         dbAdapter = new DBAdapter(getActivity());
         dbAdapter.open();
 
-        testactivitiesList[0] = (new Activity(1,"锻炼",Activity.strToDate("2020-05-31"),Activity.strToTime("01:00:00")
-                ,Activity.strToTime("02:10:00"),""));
-        testactivitiesList[1] = (new Activity(2,"学习",Activity.strToDate("2020-05-31"),Activity.strToTime("02:10:00")
-                ,Activity.strToTime("03:25:00"),""));
-        testactivitiesList[2] = (new Activity(3,"睡觉",Activity.strToDate("2020-05-31"),Activity.strToTime("03:25:00")
-                ,Activity.strToTime("08:10:00"),""));
-        testactivitiesList[3] = (new Activity(4,"吃饭",Activity.strToDate("2020-05-31"),Activity.strToTime("08:10:00")
-                ,Activity.strToTime("15:30:00"),""));
-        testactivitiesList[4] = (new Activity(5,"吃饭",Activity.strToDate("2020-06-01"),Activity.strToTime("08:10:00")
-                ,Activity.strToTime("15:30:00"),""));
 
 //        dbAdapter.deleteAllActivity();
 //        //插入测试数据
@@ -80,6 +73,7 @@ public class WeekView extends Fragment {
 //        dbAdapter.insertActivity(testactivitiesList[3]);
 //        dbAdapter.insertActivity(testactivitiesList[4]);
 
+        activitiesList = new ArrayList<>();
 
         calendarLayout = view.findViewById(R.id.calendarLayout);
         monthView = view.findViewById(R.id.monthView);
@@ -150,7 +144,7 @@ public class WeekView extends Fragment {
 
     //输入活动数组，将数组中所有的活动显示在周视图里
 
-    private void showWeekView(final Activity[] activities,int week){
+    private void showWeekView(final List<Activity> activities,int week){
         Tag[] tags =dbAdapter.queryAllTag();
         LinearLayout linearLayout = null;
         switch(week){
@@ -172,9 +166,9 @@ public class WeekView extends Fragment {
 //        saturdayLayout.removeAllViews();
 //        sundayLayout.removeAllViews();
 
-        Button[] buttons = new Button[activities.length];
+        Button[] buttons = new Button[activities.size()];
 
-        for(int i = 0;i<activities.length;i++){
+        for(int i = 0;i<activities.size();i++){
 //            //判断某一天是周几（date类型用）
 //            int y=activities[i].date.getYear();
 //            int m=activities[i].date.getMonth();
@@ -207,33 +201,33 @@ public class WeekView extends Fragment {
              * 2.获取每一个活动占每日24小时的百分比，给每一个按钮分配相应的高度
              * 注意：每一个时间轴后面跟了1个dp的分割线，可能会使时间轴和时间块不能完全对齐的情况出现。
              */
-            System.out.println("时间轴的高度为："+ (int) (activities[i].endTime.getTime()-activities[i].startTime.getTime()));
+            System.out.println("时间轴的高度为："+ (int) (activities.get(i).endTime.getTime()-activities.get(i).startTime.getTime()));
 
             //每日时间的毫秒数
             int timeOfOneDay = 3600000*24;
-            float e = (float) (activities[i].endTime.getTime()-activities[i].startTime.getTime())/timeOfOneDay * 1500;
+            float e = (float) (activities.get(i).endTime.getTime()-activities.get(i).startTime.getTime())/timeOfOneDay * 1500;
             Log.d("e",String.valueOf(e));
             linearParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, e, getResources().getDisplayMetrics())/* */;
             linearParams.setMargins(5,0,5,0);//修改按钮边距
             buttons[i].setLayoutParams(linearParams);
-            buttons[i].setText(activities[i].tag);
+            buttons[i].setText(activities.get(i).tag);
             final int finalI = i;
             buttons[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showdialog(activities[finalI]);
+                    showdialog(activities.get(finalI));
                 }
             });
             //System.out.println("颜色数组长度"+tags.length);
-            //System.out.println(activities[i].tag);
+            //System.out.println(activities.get(i).tag);
             //显示颜色
             for(Tag tag:tags){
-                if(tag.name.equals(activities[i].tag)){
+                if(tag.name.equals(activities.get(i).tag)){
                     buttons[i].setBackgroundColor(tag.color);
                     System.out.println("颜色"+ tag.color);
                 }
                 else{
-                    System.out.println(tag.name+ "*" +activities[i].tag);
+                    System.out.println(tag.name+ "*" +activities.get(i).tag);
                 }
             }
         }
@@ -294,6 +288,7 @@ public class WeekView extends Fragment {
 
         java.sql.Date sqlcurrentdate = new java.sql.Date(currentdate.getTime());
 
+        java.sql.Date datenow = new java.sql.Date(new Date().getTime());
         /**
          * 由于每天的第一个活动不一定是0时开始的了，周视图显示的逻辑修改为：
          * 使用for循环，挨个显示从周一到周日每天的视图。
@@ -315,44 +310,66 @@ public class WeekView extends Fragment {
             }
             //在对应的layout中显示按钮,此时的sqlcurrentdate在上面定义，等于每周的第一天。
             //从数据库中调取改天的数据
-            activitiesList = dbAdapter.queryActivityByTime(sqlcurrentdate,sqlcurrentdate);
+            activities = dbAdapter.queryActivityByTime(sqlcurrentdate,sqlcurrentdate);
             //System.out.println(activitiesList[0].startTime!= Activity.strToTime("00:00:00"));
             //如果该天没有活动，就将对应的layout清空
-            if (activitiesList == null){
+            if (activities == null){
                 linearLayout.removeAllViews();
             }
             //如果第一个活动不是0点开始
-            else if(activitiesList[0].startTime!= Activity.strToTime("00:00:00")){
-                Button blank = new Button(getActivity());
-                linearLayout.addView(blank);
-                LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) blank.getLayoutParams();
+            else if(activities !=null){
 
-                /**
-                 * 计算每一个控件的长度的方法：
-                 * 1.获取时间轴所在的linearLayout的总高度
-                 * 2.获取每一个活动占每日24小时的百分比，给每一个按钮分配相应的高度
-                 * 注意：每一个时间轴后面跟了1个dp的分割线，可能会使时间轴和时间块不能完全对齐的情况出现。
-                 */
-                //System.out.println("时间轴的高度为："+ (int) (activitiesList[0].endTime.getTime()-activitiesList[0].startTime.getTime()));
+                activitiesList.clear();
+                Log.v("Time",sqlcurrentdate.toString());
+                String time = "00:00:00";
+                    for (Activity activity : activities) {
+                        if (!activity.startTime.toString().equals(time))
+                            activitiesList.add(new Activity(1, "", sqlcurrentdate, Activity.strToTime(time)
+                                    , activity.startTime, ""));
+                        time = activity.endTime.toString();
+                        activitiesList.add(activity);
+                    }
 
-                //每日时间的毫秒数
-                int timeOfOneDay = 3600000*24;
-                float e = (float) (activitiesList[0].startTime.getTime()-Activity.strToTime("00:00:00").getTime())/timeOfOneDay * 1500;
-                Log.d("e",String.valueOf(e));
-                linearParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, e, getResources().getDisplayMetrics())/* */;
-                linearParams.setMargins(5,0,5,0);//修改按钮边距
-                blank.setLayoutParams(linearParams);
-                blank.setText("");
-                blank.setBackgroundColor(Color.TRANSPARENT);
+
+                    if(sqlcurrentdate.toString().equals(datenow.toString()))
+                    {
+                        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                        java.sql.Time timenow =Activity.strToTime( format.format(new Date()));
+                        activitiesList.get(activitiesList.size()-1).endTime=timenow;
+
+                    }
+                        //Log.v("endtime",activitiesList.get(activitiesList.size()-1).endTime.toString());
+
+//                Button blank = new Button(getActivity());
+//                linearLayout.addView(blank);
+//                LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) blank.getLayoutParams();
+//
+//                /**
+//                 * 计算每一个控件的长度的方法：
+//                 * 1.获取时间轴所在的linearLayout的总高度
+//                 * 2.获取每一个活动占每日24小时的百分比，给每一个按钮分配相应的高度
+//                 * 注意：每一个时间轴后面跟了1个dp的分割线，可能会使时间轴和时间块不能完全对齐的情况出现。
+//                 */
+//                //System.out.println("时间轴的高度为："+ (int) (activitiesList[0].endTime.getTime()-activitiesList[0].startTime.getTime()));
+//
+//                //每日时间的毫秒数
+//                int timeOfOneDay = 3600000*24;
+//                float e = (float) (activities[0].startTime.getTime()-Activity.strToTime("00:00:00").getTime())/timeOfOneDay * 1500;
+//                Log.d("e",String.valueOf(e));
+//                linearParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, e, getResources().getDisplayMetrics())/* */;
+//                linearParams.setMargins(5,0,5,0);//修改按钮边距
+//                blank.setLayoutParams(linearParams);
+//                blank.setText("");
+//                blank.setBackgroundColor(Color.TRANSPARENT);
 
                 showWeekView(activitiesList,cal.get(java.util.Calendar.DAY_OF_WEEK)-1);
                 //System.out.println("5.31:" + String.valueOf(cal.get(java.util.Calendar.DAY_OF_WEEK)-1));
             }
-            else{
-                //System.out.println("数组长度：" + activitiesList.length);
-                showWeekView(activitiesList,cal.get(java.util.Calendar.DAY_OF_WEEK)-1);
-                //System.out.println("456" + String.valueOf(cal.get(java.util.Calendar.DAY_OF_WEEK)-1));
-            }
+//            else{
+//                //System.out.println("数组长度：" + activitiesList.length);
+//                showWeekView(activities,cal.get(java.util.Calendar.DAY_OF_WEEK)-1);
+//                //System.out.println("456" + String.valueOf(cal.get(java.util.Calendar.DAY_OF_WEEK)-1));
+//            }
 
             cal.add(java.util.Calendar.DATE,1);
             currentdate = cal.getTime();
