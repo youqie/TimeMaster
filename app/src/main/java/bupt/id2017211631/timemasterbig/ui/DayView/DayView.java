@@ -31,6 +31,7 @@ import bupt.id2017211631.timemasterbig.adapter.ALeftAdapter;
 import bupt.id2017211631.timemasterbig.adapter.ARightAdapter;
 import bupt.id2017211631.timemasterbig.ui.ChartView.ChartView;
 import bupt.id2017211631.timemasterbig.ui.EventDialog;
+import bupt.id2017211631.timemasterbig.ui.EventDialog2;
 
 public class DayView extends Fragment {
 
@@ -215,6 +216,9 @@ public class DayView extends Fragment {
                     // TO-DO change id to correct
                     if (!activities.tag.equals("")) {
                         EventDialog.newInstance(activities.ID).show(getFragmentManager(), "event_dialog");
+                    }
+                    else{
+                        EventDialog2.newInstance(activities).show(getFragmentManager(), "event_dialog2");
                     }
 
                 }
