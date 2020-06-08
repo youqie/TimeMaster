@@ -2,166 +2,87 @@ package bupt.id2017211631.timemasterbig;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import bupt.id2017211631.timemasterbig.SQL.Tag;
-import bupt.id2017211631.timemasterbig.SQL.DBAdapter;
-import bupt.id2017211631.timemasterbig.adapter.ColorAdapter;
-
 public class ManageTagActivity extends AppCompatActivity {
 
-    String[] tagsList;
-    List<Integer> colorList = new ArrayList<>();;
-
-    DBAdapter dbAdepter;
-
-    Spinner tag;
-    Button deleteBtn;
-    Button cancelBtn;
-    Button addBtn;
-    Button updateBtn;
-    EditText newTagView;
-    Spinner color;
-
+    private List<Fragment> fragments = new ArrayList<>();
+    private List<String> tabs = new ArrayList<>();
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private Toolbar mActionBarToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_tag);
 
-        // View addView = View.inflate(this, R.layout.activity_add, null);
-        addBtn = (Button) findViewById(R.id.add);
-        updateBtn = (Button) findViewById(R.id.update);
-        deleteBtn = (Button) findViewById(R.id.delete);
-        cancelBtn = (Button) findViewById(R.id.cancel);
-        tag = (Spinner) findViewById(R.id.Spinner01);
-        newTagView = (EditText) findViewById(R.id.editText3);
-        color = (Spinner) findViewById(R.id.Spinner02);
+        mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+        getSupportActionBar().setTitle("管理标签");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dbAdepter = new DBAdapter(this);
-        dbAdepter.open();//启动数据库
-
-
-//        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_add);
-//        toolbar.setTitle("");
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-//        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
-//
-//        // 返回按键
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-        // 取消按钮
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        setTagsDropdown(); // 设置下拉选择框
-        setColorsDropdown();
-
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Tag[] newtag = dbAdepter.queryTagByname(newTagView.getText().toString());
-                if(newtag!=null)
-                {//newtag[0].color = Color.parseColor(color.getText().toString());
-                    newtag[0].isShow=1;
-                    dbAdepter.updateTag(newtag[0]);
-                    Toast.makeText(ManageTagActivity.this,"新增"+newtag[0].name+"标签"
-                            , Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                        Tag addtag = new Tag();
-                        addtag.name=newTagView.getText().toString();
-//                        addtag.color= Color.parseColor(color.getText().toString());
-                        addtag.color = Integer.parseInt(color.getSelectedItem().toString());
-                        addtag.isShow=1;
-                        dbAdepter.insertTag(addtag);
-                       Toast.makeText(ManageTagActivity.this,"新增"+newtag[0].name+"标签"
-                               , Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        updateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Tag[] newtag = dbAdepter.queryTagByname(tag.getSelectedItem().toString());
-               newtag[0].color = Integer.parseInt(color.getSelectedItem().toString());
-                    dbAdepter.updateTag(newtag[0]);
-                    Toast.makeText(ManageTagActivity.this,"修改"+newtag[0].name+"颜色为"+
-                            Integer.parseInt(color.getSelectedItem().toString())
-                            , Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               Tag[] newtag = dbAdepter.queryTagByname(tag.getSelectedItem().toString());
-               newtag[0].isShow = 0;
-               dbAdepter.updateTag(newtag[0]);
-               Toast.makeText(ManageTagActivity.this,"删除"+newtag[0].name+"成功", Toast.LENGTH_LONG).show();
-            }
-        });
+        initData();
+        initView();
     }
 
 
-    private void setTagsDropdown() {
-        // 查询数据库内的所有标签
-        Tag[] tags = dbAdepter.queryAllShowTag();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
 
-        // 初始化tagsList
-        tagsList = new String[tags.length];
+    private void initData() {
+        tabs.add("管理现有标签");
+        tabs.add("添加新标签");
+        fragments.add(new TabFragmentTab(this, tabs.get(0)));
+        fragments.add(new TabFragmentTab(this, tabs.get(1)));
+    }
 
-        int i = 0;
-        for (Tag tag : tags) {
-            tagsList[i] = tag.name;
-            i++;
+    private void initView() {
+        tabLayout = findViewById(R.id.tabs);
+        viewPager = findViewById(R.id.viewPager);
+        //设置TabLayout的模式
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        viewPager.setAdapter(new ManageTagActivity.TabAdapter(getSupportFragmentManager()));
+        //关联ViewPager和TabLayout
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    class TabAdapter extends FragmentPagerAdapter {
+        public TabAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        // 设置标签下拉选择栏的Adapter
-        ArrayAdapter<String> tagsAdapter = new ArrayAdapter<String>(ManageTagActivity.this,
-                android.R.layout.simple_spinner_dropdown_item, tagsList);
-        tag.setAdapter(tagsAdapter);
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        //显示标签上的文字
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabs.get(position);
+        }
     }
 
-    private void setColorsDropdown() {
-
-        colorList.add(Color.rgb(243, 156, 18));
-        colorList.add(Color.rgb(26, 188, 156));
-        colorList.add(Color.rgb(52, 152, 219));
-        colorList.add(Color.rgb(254, 67, 101));
-        colorList.add(Color.rgb(44, 87, 201));
-        colorList.add(Color.rgb(84, 127, 153));
-        colorList.add(Color.rgb(66, 164, 210));
-        colorList.add(Color.rgb(120, 34, 142));
-        colorList.add(Color.rgb(230, 87, 31));
-
-//        // 设置标签下拉选择栏的Adapter
-//        ArrayAdapter<String> colorsAdapter = new ArrayAdapter<String>(ManageTagActivity.this,
-//                android.R.layout.simple_spinner_dropdown_item, tagsList);
-
-        ColorAdapter colorsAdapter = new ColorAdapter(ManageTagActivity.this,colorList);
-
-        color.setAdapter(colorsAdapter);
-    }
 }

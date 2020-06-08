@@ -1,16 +1,11 @@
 <resources>
     <string name="app_name">时间管理大师</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">时间管理大师</string>
     <string name="nav_header_subtitle">Time Master</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_home">日视图</string>
-    <string name="menu_gallery">月视图</string>
+    <string name="menu_gallery">周视图</string>
     <string name="menu_slideshow">数据统计</string>
-    <string name="menu_managetag">管理标签</string>
 
     <string name="home_second">Home Second</string>
 </resources>
