@@ -94,7 +94,7 @@ public class ManageTagActivity extends AppCompatActivity {
                         addtag.color = Integer.parseInt(color.getSelectedItem().toString());
                         addtag.isShow=1;
                         dbAdepter.insertTag(addtag);
-                       Toast.makeText(ManageTagActivity.this,"新增"+newtag[0].name+"标签"
+                       Toast.makeText(ManageTagActivity.this,"新增"+addtag.name+"标签"
                                , Toast.LENGTH_LONG).show();
                 }
             }
