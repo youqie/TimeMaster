@@ -43,9 +43,9 @@ import lecho.lib.hellocharts.view.LineChartView;
 public class ChartView extends Fragment {
 
 
+    static Toast toast;
     Date startDate = new Date();
     Date endDate = new Date();
-
     PlaceholderFragment placeholderFragment;
 
     public static String formatTime(Date date) {
@@ -145,9 +145,9 @@ public class ChartView extends Fragment {
             long ret = 0;
             for (Activity re : res) {
                 if (re.tag.equals(tag)) {
-                    if (re.endTime.toString().equals("23:59:59")&&re.date.toString().equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))){
-                        ret += (new Date().getTime() - re.startTime.getTime())/DateUtils.DAY_IN_MILLIS;
-                    }else{
+                    if (re.endTime.toString().equals("23:59:59") && re.date.toString().equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
+                        ret += (new Date().getTime() - re.startTime.getTime()) / DateUtils.DAY_IN_MILLIS;
+                    } else {
                         ret += re.endTime.getTime() - re.startTime.getTime();
                     }
                 }
@@ -161,9 +161,9 @@ public class ChartView extends Fragment {
             long ret = 0;
             for (Activity re : res) {
                 if (re.tag.equals(tag)) {
-                    if (re.endTime.toString().equals("23:59:59")&&re.date.toString().equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))){
-                        ret += (new Date().getTime() - re.startTime.getTime())/DateUtils.DAY_IN_MILLIS;
-                    }else{
+                    if (re.endTime.toString().equals("23:59:59") && re.date.toString().equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
+                        ret += (new Date().getTime() - re.startTime.getTime()) / DateUtils.DAY_IN_MILLIS;
+                    } else {
                         ret += re.endTime.getTime() - re.startTime.getTime();
                     }
                 }
@@ -226,7 +226,7 @@ public class ChartView extends Fragment {
             long Start = startDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS, End = endDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS;
             int size = (int) ((End - Start) / DateUtils.DAY_IN_MILLIS);
             Start = startDate.getTime();
-            End=Start+size*DateUtils.DAY_IN_MILLIS;
+            End = Start + size * DateUtils.DAY_IN_MILLIS;
 
 
             List<AxisValue> axisValues = new ArrayList<AxisValue>();
@@ -268,7 +268,7 @@ public class ChartView extends Fragment {
         }
 
         private void generateLineData(int color, float range, int index) {
-            long Start = startDate.getTime() ;
+            long Start = startDate.getTime();
             String tags;
             if (index == -1) {
                 tags = null;
@@ -307,9 +307,21 @@ public class ChartView extends Fragment {
                 long Start = startDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS, End = endDate.getTime() / DateUtils.DAY_IN_MILLIS * DateUtils.DAY_IN_MILLIS;
                 int size = (int) ((End - Start) / DateUtils.DAY_IN_MILLIS) + 1;
                 if (value.getValue() * 60 > 120) {
-                    Toast.makeText(context, "在选定的" + size + "天内，共花费了约" + (float) (Math.round(value.getValue() * 10)) / 10 + "小时在" + getTags()[columnIndex].name + "上", Toast.LENGTH_SHORT).show();
+                    if (ChartView.toast == null) {
+                        toast = Toast.makeText(context, "在选定的" + size + "天内，共花费了约" + (float) (Math.round(value.getValue() * 10)) / 10 + "小时在" + getTags()[columnIndex].name + "上", Toast.LENGTH_SHORT);
+                    } else {
+                        toast.setText("在选定的" + size + "天内，共花费了约" + (float) (Math.round(value.getValue() * 10)) / 10 + "小时在" + getTags()[columnIndex].name + "上");
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                    }
+                    toast.show();
                 } else {
-                    Toast.makeText(context, "在选定的" + size + "天内，共花费了" + (int) (value.getValue() * 60) + "分钟在" + getTags()[columnIndex].name + "上", Toast.LENGTH_SHORT).show();
+                    if (ChartView.toast == null) {
+                        toast = Toast.makeText(context, "在选定的" + size + "天内，共花费了" + (int) (value.getValue() * 60) + "分钟在" + getTags()[columnIndex].name + "上", Toast.LENGTH_SHORT);
+                    } else {
+                        toast.setText("在选定的" + size + "天内，共花费了" + (int) (value.getValue() * 60) + "分钟在" + getTags()[columnIndex].name + "上");
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                    }
+                    toast.show();
                 }
             }
 
@@ -333,13 +345,25 @@ public class ChartView extends Fragment {
             @Override
             public void onValueSelected(int lineIndex, int pointIndex, PointValue pointValue) {
                 if (tag == null) return;
-                long Start = startDate.getTime() ;
-                long Now = (Start + DateUtils.DAY_IN_MILLIS*pointIndex);
+                long Start = startDate.getTime();
+                long Now = (Start + DateUtils.DAY_IN_MILLIS * pointIndex);
                 String date = getDay(Now);
                 if (pointValue.getY() * 60 > 120) {
-                    Toast.makeText(context, "在" + date + "，共花费了约" + (float) (Math.round(pointValue.getY() * 10)) / 10 + "小时在" + tag + "上", Toast.LENGTH_SHORT).show();
+                    if (ChartView.toast == null) {
+                        toast = Toast.makeText(context, "在" + date + "，共花费了约" + (float) (Math.round(pointValue.getY() * 10)) / 10 + "小时在" + tag + "上", Toast.LENGTH_SHORT);
+                    } else {
+                        toast.setText("在" + date + "，共花费了约" + (float) (Math.round(pointValue.getY() * 10)) / 10 + "小时在" + tag + "上");
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                    }
+                    toast.show();
                 } else {
-                    Toast.makeText(context, "在" + date + "，共花费了" + (int) (pointValue.getY() * 60) + "分钟在" + tag + "上", Toast.LENGTH_SHORT).show();
+                    if (ChartView.toast == null) {
+                        toast = Toast.makeText(context, "在" + date + "，共花费了" + (int) (pointValue.getY() * 60) + "分钟在" + tag + "上", Toast.LENGTH_SHORT);
+                    } else {
+                        toast.setText("在" + date + "，共花费了" + (int) (pointValue.getY() * 60) + "分钟在" + tag + "上");
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                    }
+                    toast.show();
                 }
             }
 
