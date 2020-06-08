@@ -29,13 +29,13 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
         // 默认路径是 /data/data/(包名)/databases/*.db
         File dbFile = mContext.getDatabasePath
                 ("/data/data/bupt.id2017211631.timemasterbig/databases/"
-                        +"activity.db");
+                        + "activity.db");
         File dbFile_shm = mContext.getDatabasePath
                 ("/data/data/bupt.id2017211631.timemasterbig/databases/"
-                        +"activity.db-shm");
+                        + "activity.db-shm");
         File dbFile_wal = mContext.getDatabasePath
                 ("/data/data/bupt.id2017211631.timemasterbig/databases/"
-                        +"activity.db-wal");
+                        + "activity.db-wal");
         File exportDir = new File(Environment.getExternalStorageDirectory(),
                 "/TimeMaster/EBCBackup");
         if (!exportDir.exists()) {
@@ -48,14 +48,21 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
         String command = params[0];
         if (command.equals(COMMAND_BACKUP)) {
             try {
-                backup.createNewFile();
-                backup_shm.createNewFile();
-                backup_wal.createNewFile();
-                fileCopy(dbFile, backup);
-                fileCopy(dbFile_shm, backup_shm);
-                fileCopy(dbFile_wal, backup_wal);
+                if (backup.exists() && backup_shm.exists() && backup_wal.exists()) {
+                    fileCopy(dbFile, backup);
+                    fileCopy(dbFile_shm, backup_shm);
+                    fileCopy(dbFile_wal, backup_wal);
+                } else {
+                    backup.createNewFile();
+                    backup_shm.createNewFile();
+                    backup_wal.createNewFile();
+                    fileCopy(dbFile, backup);
+                    fileCopy(dbFile_shm, backup_shm);
+                    fileCopy(dbFile_wal, backup_wal);
+                }
+
                 Looper.prepare();
-                Toast toast=Toast.makeText(mContext,"备份成功",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(mContext, "备份成功", Toast.LENGTH_SHORT);
                 toast.show();
                 Looper.loop();
                 return Log.d("backup", "ok");
@@ -70,7 +77,7 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
                 fileCopy(backup_shm, dbFile_shm);
                 fileCopy(backup_wal, dbFile_wal);
                 Looper.prepare();
-                Toast toast=Toast.makeText(mContext,"恢复成功",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(mContext, "恢复成功", Toast.LENGTH_SHORT);
                 toast.show();
                 Looper.loop();
                 return Log.d("restore", "success");
@@ -82,6 +89,7 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
         } else {
             return null;
         }
+
     }
 
     private void fileCopy(File dbFile, File backup) throws IOException {
