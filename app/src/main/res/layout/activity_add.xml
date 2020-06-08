@@ -57,6 +57,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -68,10 +69,13 @@
             <EditText
                 android:id="@+id/editText2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
+                android:layout_marginBottom="20dp"
+                android:paddingTop="12dp"
                 android:ems="10"
                 android:text=""
+                android:background="@drawable/button_drawable_border"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,12 +93,18 @@
                 android:id="@+id/submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_drawable"
+                android:textColor="#FFFFFF"
                 android:text="开始" />
 
             <Button
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/button_drawable_border"
+                android:textColor="@color/colorPrimary"
                 android:text="取消" />
         </LinearLayout>
 

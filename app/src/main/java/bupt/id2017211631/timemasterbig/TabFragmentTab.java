@@ -2,6 +2,7 @@ package bupt.id2017211631.timemasterbig;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -88,7 +89,7 @@ public class TabFragmentTab extends Fragment {
             newTagView = view.findViewById(R.id.editText3);
             color = view.findViewById(R.id.Spinner02);
             addBtn = view.findViewById(R.id.add);
-
+            cancelBtn = view.findViewById(R.id.cancelNew);
             setColorsDropdown();
 
             addBtn.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +114,13 @@ public class TabFragmentTab extends Fragment {
                         Toast.makeText(getActivity(),"新增"+addtag.name+"标签"
                                 , Toast.LENGTH_LONG).show();
                     }
+                }
+            });
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),MainActivity.class);
+                    startActivity(intent);
                 }
             });
             return view;

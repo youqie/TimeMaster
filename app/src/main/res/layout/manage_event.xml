@@ -84,9 +84,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:layout_marginRight="20dp"
+        android:background="@drawable/button_drawable"
+        android:textColor="#FFFFFF"
         android:layout_weight="1"
         android:ems="10"
-        android:text="删除活动" />
+        android:text="删除" />
 
 
 </LinearLayout>
