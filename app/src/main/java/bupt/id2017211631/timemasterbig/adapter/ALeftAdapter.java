@@ -51,7 +51,7 @@ public class ALeftAdapter extends BaseAdapter {
 		if (convertView==null) {
 			hold=new ViewHold();
 			convertView= LayoutInflater.from(context).inflate(R.layout.layout_left_item, null);
-			hold.textView=(TextView) convertView.findViewById(R.id.left_container_textview0);
+			hold.textView= convertView.findViewById(R.id.left_container_textview0);
 			convertView.setTag(hold);
 		}else {
 			hold=(ViewHold) convertView.getTag();

@@ -9,6 +9,9 @@
     <item
         android:id="@+id/action_manageTag"
         android:orderInCategory="100"
-        android:title="管理标签"
-        app:showAsAction="always" />
+        android:title="管理标签" />
+    <item
+        android:id="@+id/action_backup"
+        android:orderInCategory="100"
+        android:title="备份与恢复"/>
 </menu>

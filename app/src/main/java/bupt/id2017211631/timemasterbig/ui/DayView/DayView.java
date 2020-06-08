@@ -91,10 +91,10 @@ public class DayView extends Fragment {
 
 
     public void findView(View view) {
-        title_horsv = (MyHorizontalScrollView) view.findViewById(R.id.title_horsv);
-        left_container_listview = (ListView) view.findViewById(R.id.left_container_listview);
-        content_horsv = (MyHorizontalScrollView) view.findViewById(R.id.content_horsv);
-        right_container_listview = (ListView) view.findViewById(R.id.right_container_listview);
+        title_horsv = view.findViewById(R.id.title_horsv);
+        left_container_listview = view.findViewById(R.id.left_container_listview);
+        content_horsv = view.findViewById(R.id.content_horsv);
+        right_container_listview = view.findViewById(R.id.right_container_listview);
     }
 
     public void initTag(View view) {
@@ -103,7 +103,7 @@ public class DayView extends Fragment {
                     (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        LinearLayout tagList = (LinearLayout) view.findViewById(R.id.taglist);
+        LinearLayout tagList = view.findViewById(R.id.taglist);
         tagList.removeAllViews();
 
         //tags = dbAdapter.queryAllShowTag();
@@ -119,7 +119,7 @@ public class DayView extends Fragment {
         for (Tag tag : tags) {
             if (isAdded()) {
                 View tagview = android.view.LayoutInflater.from(getActivity()).inflate(R.layout.layout_tagname, null);
-                TextView text = (TextView) tagview.findViewById(R.id.tag);
+                TextView text = tagview.findViewById(R.id.tag);
                 text.setText(tag.name);
                 //text.setId(i);
                 tagList.addView(tagview);

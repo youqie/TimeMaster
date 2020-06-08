@@ -20,7 +20,7 @@ import bupt.id2017211631.timemasterbig.adapter.ColorAdapter;
 public class ManageTagActivity extends AppCompatActivity {
 
     String[] tagsList;
-    List<Integer> colorList = new ArrayList<>();;
+    List<Integer> colorList = new ArrayList<>();
 
     DBAdapter dbAdepter;
 
@@ -39,13 +39,13 @@ public class ManageTagActivity extends AppCompatActivity {
         setContentView(R.layout.manage_tag);
 
         // View addView = View.inflate(this, R.layout.activity_add, null);
-        addBtn = (Button) findViewById(R.id.add);
-        updateBtn = (Button) findViewById(R.id.update);
-        deleteBtn = (Button) findViewById(R.id.delete);
-        cancelBtn = (Button) findViewById(R.id.cancel);
-        tag = (Spinner) findViewById(R.id.Spinner01);
-        newTagView = (EditText) findViewById(R.id.editText3);
-        color = (Spinner) findViewById(R.id.Spinner02);
+        addBtn = findViewById(R.id.add);
+        updateBtn = findViewById(R.id.update);
+        deleteBtn = findViewById(R.id.delete);
+        cancelBtn = findViewById(R.id.cancel);
+        tag = findViewById(R.id.Spinner01);
+        newTagView = findViewById(R.id.editText3);
+        color = findViewById(R.id.Spinner02);
 
         dbAdepter = new DBAdapter(this);
         dbAdepter.open();//启动数据库

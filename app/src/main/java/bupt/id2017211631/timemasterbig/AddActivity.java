@@ -39,11 +39,11 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         // View addView = View.inflate(this, R.layout.activity_add, null);
-        submitBtn = (Button) findViewById(R.id.submit);
-        cancelBtn = (Button) findViewById(R.id.cancel);
-        tag = (Spinner) findViewById(R.id.Spinner01);
-        timeView = (TextView) findViewById(R.id.timenow);
-        noteView = (TextView) findViewById(R.id.editText2);
+        submitBtn = findViewById(R.id.submit);
+        cancelBtn = findViewById(R.id.cancel);
+        tag = findViewById(R.id.Spinner01);
+        timeView = findViewById(R.id.timenow);
+        noteView = findViewById(R.id.editText2);
 
         dbAdepter = new DBAdapter(this);
         dbAdepter.open();//启动数据库
