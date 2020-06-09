@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.text.SimpleDateFormat;
@@ -37,10 +38,10 @@ public class TimeMaster extends AppWidgetProvider {
         Activity[] activities = dbAdepter.queryLastActivity(sqldatenow);
         String acnow = activities[0].tag;
         String timeStart = activities[0].startTime.toString();
-      //  if (activities[0].endTime.toString() == "23:59:59") {
+        if (activities[0].endTime.toString().equals("23:59:59")) {
             views.setTextViewText(R.id.appwidget_text2, acnow + " 从" + timeStart);
-       // }
-        // Instruct the widget manager to update the widget
+        }
+//         Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
@@ -55,7 +56,7 @@ public class TimeMaster extends AppWidgetProvider {
                 }
             };
             Timer timer = new Timer();
-            timer.schedule(task,0,100000);
+            timer.schedule(task,0,1000000);
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
