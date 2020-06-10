@@ -122,6 +122,7 @@ public class WeekView extends Fragment {
             @Override
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
                 showWeekView(calendar);
+                weekView.scrollToCalendar(calendar.getYear(),calendar.getMonth(),calendar.getDay());
             }
         });
         weekView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
@@ -134,6 +135,8 @@ public class WeekView extends Fragment {
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
                 //System.out.println("day:"+calendar.getDay());
                 showWeekView(calendar);
+
+                //monthView.scrollToCalendar(calendar.getYear(),calendar.getMonth(),calendar.getDay());
             }
         });
         //Create的时候就要调用一下这个显示周视图的函数，不然刚进来的时候不会自动显示
