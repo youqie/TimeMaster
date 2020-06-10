@@ -122,7 +122,11 @@ public class WeekView extends Fragment {
             @Override
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
                 showWeekView(calendar);
-                weekView.scrollToCalendar(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+                Calendar c = weekView.getSelectedCalendar();
+                //如果月视图和周视图不一样，才将周视图也跳转
+                if(!(calendar.getYear()==c.getYear() && calendar.getMonth()==c.getMonth() && calendar.getDay() == c.getDay())){
+                    weekView.scrollToCalendar(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+                }
             }
         });
         weekView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
@@ -136,7 +140,7 @@ public class WeekView extends Fragment {
                 //System.out.println("day:"+calendar.getDay());
                 showWeekView(calendar);
 
-                //monthView.scrollToCalendar(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+                monthView.scrollToCalendar(calendar.getYear(),calendar.getMonth(),calendar.getDay());
             }
         });
         //Create的时候就要调用一下这个显示周视图的函数，不然刚进来的时候不会自动显示
